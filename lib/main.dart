@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:second_app_2023_folder/BirthdayEntrySquare.dart';
+import 'package:second_app_2023_folder/birthday_entry_square.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  sharedPrefInit();
+
   runApp(MaterialApp(
     home: MainPage(),
   ));
@@ -45,8 +48,9 @@ class _MainPageState extends State<MainPage> {
         body: ListView.builder(
             itemCount: _birthdayEntries.length,
             itemBuilder: (context, index) {
-              return BirthdayEntrySquare(
-                child: _birthdayEntries[index],
+              return birthday_entry_square(
+                nameChild: _birthdayEntries[index],
+                birthdayChild: index,
               );
             }),
       ),
@@ -54,47 +58,43 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
-// body: ListView.builder(
-// padding: const EdgeInsets.all(8),
-// itemCount: entries.length,
-// itemBuilder: (BuildContext context, int index) {
-// return Container(
-// height: 50,
-// // padding: const EdgeInsets.only(bottom: 8),
-// decoration: const BoxDecoration(
-// border: Border(
-// top: BorderSide(width: 1),
-// left: BorderSide(width: 2),
-// right: BorderSide(width: 2),
-// bottom: BorderSide(width: 1),
-// ),
-// ),
-// child: Center(child: Text('Entry ${entries[index]}')),
-// );
-// }),
+void sharedPrefInit() async {
+  try {
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    prefs.getString("app-name");
+  } catch (err) {
+    SharedPreferences.setMockInitialValues({});
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString("app-name", "my-app");
+  }
+}
 
-// open class EntryInfo(var name: String, var date: Int)
-//
-// class BirthdayEntry(val name: String, val date: Int) {
-// private val birthdayEntryInfo = EntryInfo(name, date)
-//
-// fun setName(newName: String) {
-// birthdayEntryInfo.name = newName
-// }
-//
-// fun setDate(newDate: Int) {
-// birthdayEntryInfo.date = newDate
-// }
-//
-// fun print() {
-// println("${birthdayEntryInfo.name}  -  ${birthdayEntryInfo.date}")
-// }
-// }
-//
-// fun main() {
-// val nicksBDayEntry = BirthdayEntry("Nicholas Burkett", 99999)
-// nicksBDayEntry.print()
-//
-// nicksBDayEntry.setName("Nikolai Burkae")
-// nicksBDayEntry.print()
-// }
+dynamic putInt(key, val) async {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final SharedPreferences prefs = await _prefs;
+  var _res = prefs.setInt("$key", val);
+  return _res;
+}
+
+dynamic putString(key, val) async {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final SharedPreferences prefs = await _prefs;
+  var _res = prefs.setString("$key", val);
+  return _res;
+}
+
+dynamic getInt(key) async {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final SharedPreferences prefs = await _prefs;
+  int? _res = prefs.getInt("$key");
+  return _res;
+}
+
+dynamic getString(key) async {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final SharedPreferences prefs = await _prefs;
+  String? _res = prefs.getString("$key");
+  return _res;
+}
