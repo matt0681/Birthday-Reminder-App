@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:second_app_2023_folder/birthday_entry_square.dart';
+import 'package:second_app_2023_folder/user_input_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -40,7 +41,11 @@ class _MainPageState extends State<MainPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // put on pressed actions here!
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => user_input_page(),
+                ));
           },
           backgroundColor: Colors.teal[800],
           child: const Icon(Icons.add),
