@@ -74,18 +74,28 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  /*
+   * This function handles opening a new user input page and gets any data back
+   * to use in creating a new birthday entry.
+   */
   Future<void> _navigateAndReturnEntryData(BuildContext context) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const user_input_page()),
     );
 
-    var name = result[0];
-    var date = result[1];
+    // The Navigator returns a list from the user input page. The first value is
+    // a boolean function indicating whether the user canceled out of the user input
+    // page. The second is a name entry, and third is a data entry.
+    var canceled = result[0];
+    var name = result[1];
+    var date = result[2];
 
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('$name - $date')));
+    if (canceled == false) {
+      print('$name - $date');
+    } else {
+      print('User canceled out of the new entry. No entry made.');
+    }
   }
 }
 
