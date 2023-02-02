@@ -12,7 +12,10 @@ class user_input_page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add a New Birthday")),
+      appBar: AppBar(
+        title: const Text("Add a New Birthday"),
+        automaticallyImplyLeading: false,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
